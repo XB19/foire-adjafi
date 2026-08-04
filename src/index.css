@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Open+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto+Slab:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Mont Black";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/Mont-Black.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/Mont-Heavy.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/Mont-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mont";
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("/fonts/Mont-Thin.otf") format("opentype");
+}
+
+@theme {
+  /* Palette 14ᵉ édition — vert et jaune de la nouvelle identité Adjafi */
+  --color-adjafi-green: #1b7e55;
+  --color-adjafi-green-dark: #145c40;
+  --color-adjafi-yellow: #fcc72d;
+  --color-adjafi-yellow-dark: #8b6914;
+  --color-adjafi-brown: #995823;
+  --color-adjafi-gray-light: #e8e8e8;
+  --color-adjafi-gray: #9c9c9c;
+  --color-adjafi-ink: #1c1c1c;
+
+  --font-mont-black: "Mont Black", sans-serif;
+  --font-mont: "Mont", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-open-sans: "Open Sans", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-roboto-slab: "Roboto Slab", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-roboto);
+  color: var(--color-adjafi-ink);
+}
+
+.eyebrow {
+  font-family: var(--font-mont-black);
+  letter-spacing: 0.12em;
+}
+
+.heading-display {
+  font-family: var(--font-mont-black);
+  text-transform: uppercase;
+  line-height: 1.05;
+}
