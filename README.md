@@ -23,14 +23,43 @@ Le formulaire de [src/pages/ContactPage.jsx](src/pages/ContactPage.jsx) écrit d
 `contact_messages` (colonnes `name`, `phone`, `message`) — créez cette table dans Supabase pour
 qu'il fonctionne, ou adaptez le code à votre propre schéma.
 
+## Lancer avec Docker
+
+Le projet inclut un `Dockerfile` (build Vite + Nginx) et un `docker-compose.yml`.
+
+```bash
+docker compose up --build
+```
+
+Le site est alors servi sur [http://localhost:8080](http://localhost:8080).
+
+Pour connecter Supabase, les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` doivent être
+fournies **au moment du build** (Vite les intègre dans le bundle, elles ne peuvent pas être changées
+à l'exécution du conteneur) :
+
+```bash
+VITE_SUPABASE_URL=https://xxxx.supabase.co VITE_SUPABASE_ANON_KEY=xxxx docker compose up --build
+```
+
+Ou directement avec `docker build` :
+
+```bash
+docker build \
+  --build-arg VITE_SUPABASE_URL=https://xxxx.supabase.co \
+  --build-arg VITE_SUPABASE_ANON_KEY=xxxx \
+  -t foire-adjafi .
+
+docker run -p 8080:80 foire-adjafi
+```
+
 ## Pages incluses
 
 Toutes les pages du site d'origine ont été reproduites :
 
 - `/` — Accueil
 - `/a-propos` — Notre histoire
-- `/adjafi-13` — Adjafi 13 (édition en cours, avec compte à rebours)
-- `/adjafi-12`, `/adjafi-11`, `/adjafi-10` — Éditions précédentes
+- `/adjafi-14` — Adjafi 14 (édition en cours, avec compte à rebours)
+- `/adjafi-13`, `/adjafi-12`, `/adjafi-11`, `/adjafi-10` — Éditions précédentes (Revivre)
 - `/adjafi-1-a-9` — Frise chronologique des 9 premières éditions
 - `/exposez` — Devenir exposant (types de stands)
 - `/sponsorisez` — Devenir sponsor (avantages, partenaires)
