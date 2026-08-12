@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import PageHero from "../components/PageHero";
+import About from "../components/About";
 import Contact from "../components/Contact";
 
 const pillars = [
@@ -107,6 +108,7 @@ export default function APropos() {
         image="/images/site/WhatsApp-Image-2025-08-10-at-08.25.39-1024x731.jpeg"
       />
 
+      <About showButton={false} />
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {pillars.map((p) => (

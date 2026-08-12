@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function BlogCard({ post }) {
-  const href = `/journal/${post.slug}`;
+  const href = post.href ?? `/journal/${post.slug}`;
   return (
     <article className="overflow-hidden rounded-2xl border border-adjafi-gray-light shadow-sm transition-shadow hover:shadow-lg">
       <Link to={href}>

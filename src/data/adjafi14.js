@@ -343,6 +343,72 @@ export const gallery14 = [
   { src: "/images/adjafi14/gallery-live-band.jpg", category: "Concert" },
 ];
 
+export const flyers14 = [
+  {
+    title: "Affiche officielle de l'événement",
+    category: "Affiche principale",
+    description: "Visuel officiel de la 14ᵉ édition avec les dates, le lieu et le thème de la foire.",
+    src: "/images/adjafi14/Affiche principale concert vrai.jpg",
+  },
+  {
+    title: "Forum de lancement",
+    category: "Événement",
+    description: "Invitation au forum d'ouverture : conférences, panels et rencontres professionnelles.",
+    src: "/images/adjafi14/forummm copie.jpg",
+  },
+  {
+    title: "Innovation et startups",
+    category: "Exposition",
+    description: "Visuel présentant le village des startups et les initiatives d'agro-transformation.",
+    src: "/images/adjafi14/innovations copie.jpg",
+  },
+  {
+    title: "Bâche d'information",
+    category: "Communication",
+    description: "Support promotionnel avec l'appel à participation et les axes de l'édition 2026.",
+    src: "/images/adjafi14/Bache 2 (290x200cm) copie.jpg",
+  },
+];
+
+export const journalHighlights = [
+  {
+    slug: "dates-lieu",
+    title: "Dates & lieu",
+    date: "À venir",
+    category: "Edition 14",
+    image: "/images/adjafi14/gallery-vip-row.jpg",
+    excerpt: "Du 20 août au 06 sept 2026 · Aire de jeux du lycée d'Agoè-Nyivé",
+    href: "/adjafi-14",
+  },
+  {
+    slug: "theme-2026",
+    title: "Thème 2026",
+    date: "A venir",
+    category: "Thème",
+    image: "/images/adjafi14/gallery-ribbon-cutting.jpg",
+    excerpt: "Jeunes TPME togolaises : Financement, qualité et compétitivité pour conquérir le marché africain.",
+    href: "/adjafi-14",
+  },
+  {
+    slug: "innovations-14",
+    title: "Innovations 2026",
+    date: "À venir",
+    category: "Innovation",
+    image: "/images/adjafi14/gallery-vr-demo.jpg",
+    excerpt: "Village Agro & Qualité, label 'Exposant Certifié Adjafi' et espace Business & Finance.",
+    href: "/adjafi-14",
+  },
+  {
+    slug: "objectifs-14",
+    title: "Objectifs de l'édition",
+    date: "Vision 2026",
+    category: "Vision",
+    image: "/images/adjafi14/gallery-startups.jpg",
+    excerpt: "Faciliter le financement, la qualité, la digitalisation et l'accès aux marchés africains.",
+    href: "/adjafi-14",
+  },
+];
+
 export const contacts14 = {
   email: "foireadjafisecretariat@gmail.com",
   website: "www.lafoireadjafi.com",

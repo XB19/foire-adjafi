@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function About() {
+export default function About({ buttonText = "Cliquez ici", buttonHref = "/a-propos", showButton = true }) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
       <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -17,7 +17,7 @@ export default function About() {
           />
         </div>
 
-        <div className="mt-8 lg:mt-0">
+        <div className="mt-8 lg:mt-0 animate-fade-up">
           <p className="eyebrow text-sm text-adjafi-green-dark">Qui sommes-nous?</p>
           <h1 className="heading-display mt-3 text-3xl text-adjafi-ink sm:text-4xl">
             la foire des jeunes entrepreneurs
@@ -35,12 +35,14 @@ export default function About() {
             relations voient le jour. Rejoignez-nous pour découvrir les
             talents qui façonnent l'avenir du Togo.
           </p>
-          <Link
-            to="/a-propos"
-            className="mt-8 inline-block rounded-full bg-adjafi-green-dark px-8 py-3 font-mont-black text-sm tracking-wide text-white transition-colors hover:bg-adjafi-green"
-          >
-            Cliquez ici
-          </Link>
+          {showButton && (
+            <Link
+              to={buttonHref}
+              className="mt-8 inline-block rounded-full bg-adjafi-green-dark px-8 py-3 font-mont-black text-sm tracking-wide text-white transition-colors hover:bg-adjafi-green"
+            >
+              {buttonText}
+            </Link>
+          )}
         </div>
       </div>
     </section>

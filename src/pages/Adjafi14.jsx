@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import Countdown from "../components/Countdown";
 import Contact from "../components/Contact";
 import {
@@ -43,7 +44,65 @@ function SectionTitle({ eyebrow, title, dark = false }) {
   );
 }
 
+function SectionWithImage({
+  eyebrow,
+  title,
+  children,
+  imgSrc,
+  imgAlt,
+  reverse = false,
+  sectionClassName = "",
+  textClassName = "",
+  imageClassName = "",
+}) {
+  return (
+    <section className={`mx-auto max-w-6xl px-4 py-20 lg:px-8 ${sectionClassName}`}>
+      <div className={`grid gap-10 items-center lg:grid-cols-2 ${reverse ? "lg:grid-flow-dense" : ""}`}>
+        <div className={`${reverse ? "lg:col-start-2" : ""} reveal-on-scroll ${textClassName}`}>
+          {eyebrow && <p className={`eyebrow text-sm ${textClassName ? "text-white" : "text-adjafi-green"}`}>{eyebrow}</p>}
+          <h2 className={`heading-display mt-3 text-3xl sm:text-4xl ${textClassName ? "text-white" : "text-adjafi-ink"}`}>
+            {title}
+          </h2>
+          <div className="mt-6 space-y-5">{children}</div>
+        </div>
+        <div className={`reveal-on-scroll image-reveal overflow-hidden rounded-3xl shadow-xl ${imageClassName}`}>
+          <img src={imgSrc} alt={imgAlt} className="h-full w-full min-h-[320px] object-cover" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Adjafi14() {
+  useEffect(() => {
+    const elements = document.querySelectorAll(".reveal-on-scroll");
+
+    if (!elements.length) {
+      return undefined;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((element) => element.classList.add("reveal-active"));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-active");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       {/* HERO */}
@@ -75,44 +134,49 @@ export default function Adjafi14() {
       </section>
 
       {/* CONTEXTE */}
-      <section className="mx-auto max-w-4xl px-4 py-20 text-center lg:px-8">
-        <p className="eyebrow text-sm text-adjafi-green">Contexte et justification</p>
-        <h1 className="heading-display mt-3 text-3xl text-adjafi-ink sm:text-4xl">
-          {context.title}
-        </h1>
+      <SectionWithImage
+        eyebrow="Contexte et justification"
+        title={context.title}
+        imgSrc="/images/adjafi14/gallery-startups.jpg"
+        imgAlt="Jeunes entrepreneurs lors de la Foire Adjafi 14"
+      >
         {context.paragraphs.map((p) => (
-          <p key={p} className="mt-6 font-open-sans leading-relaxed text-adjafi-gray">
+          <p key={p} className="font-open-sans leading-relaxed text-adjafi-gray">
             {p}
           </p>
         ))}
-      </section>
+      </SectionWithImage>
 
       {/* THEME */}
-      <section className="bg-adjafi-green py-20 text-white">
-        <div className="mx-auto max-w-4xl px-4 text-center lg:px-8">
-          <p className="eyebrow text-sm text-white/80">Thème officiel 2026 – 2030</p>
-          <h1 className="heading-display mt-4 text-2xl sm:text-3xl">« {theme.main} »</h1>
-
-          <div className="mx-auto mt-10 max-w-2xl rounded-2xl bg-white/10 p-8 backdrop-blur">
-            <p className="eyebrow text-xs text-adjafi-yellow">{theme.subLabel}</p>
-            <p className="mt-3 font-open-sans text-lg italic">« {theme.sub} »</p>
-          </div>
-
-          {theme.paragraphs.map((p) => (
-            <p key={p} className="mx-auto mt-6 max-w-3xl font-open-sans leading-relaxed text-white/85">
-              {p}
-            </p>
-          ))}
+      <SectionWithImage
+        eyebrow="Thème officiel 2026 – 2030"
+        title={`« ${theme.main} »`}
+        imgSrc="/images/adjafi14/innovations copie.jpg"
+        imgAlt="Visuel innovation agroalimentaire Adjafi 14"
+        sectionClassName="bg-adjafi-green text-white"
+        textClassName="text-white"
+        imageClassName="bg-white/10"
+      >
+        <div className="rounded-2xl bg-white/10 p-8 backdrop-blur">
+          <p className="eyebrow text-xs text-adjafi-yellow">{theme.subLabel}</p>
+          <p className="mt-3 font-open-sans text-lg italic text-white/90">« {theme.sub} »</p>
         </div>
-      </section>
+        {theme.paragraphs.map((p) => (
+          <p key={p} className="font-open-sans text-base leading-relaxed text-white/85">
+            {p}
+          </p>
+        ))}
+      </SectionWithImage>
 
       {/* OBJECTIFS */}
-      <section className="mx-auto max-w-6xl px-4 py-20 lg:px-8">
-        <SectionTitle eyebrow="Vision stratégique 2026–2030" title="Objectifs de l'édition 2026" />
-        <p className="mx-auto mt-6 max-w-3xl text-center font-open-sans leading-relaxed text-adjafi-gray">
-          {objectives.intro}
-        </p>
-        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <SectionWithImage
+        eyebrow="Vision stratégique 2026–2030"
+        title="Objectifs de l'édition 2026"
+        imgSrc="/images/adjafi14/gallery-products.jpg"
+        imgAlt="Objectifs et engagements de la Foire Adjafi 14"
+      >
+        <p className="font-open-sans leading-relaxed text-adjafi-gray">{objectives.intro}</p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
           {objectives.items.map((item, i) => (
             <div key={item} className="flex gap-4 rounded-2xl bg-adjafi-gray-light/50 p-5">
               <span className="heading-display shrink-0 text-2xl text-adjafi-green">
@@ -122,7 +186,7 @@ export default function Adjafi14() {
             </div>
           ))}
         </div>
-      </section>
+      </SectionWithImage>
 
       {/* AXES STRATEGIQUES */}
       <section className="bg-adjafi-gray-light/50 py-20">
@@ -218,22 +282,25 @@ export default function Adjafi14() {
       </section>
 
       {/* POSITIONNEMENT */}
-      <section className="bg-adjafi-green py-20 text-white">
-        <div className="mx-auto max-w-4xl px-4 text-center lg:px-8">
-          <h2 className="heading-display text-2xl sm:text-3xl">Positionnement de l'évènement</h2>
-          <p className="mx-auto mt-6 max-w-2xl font-open-sans leading-relaxed text-white/85">
-            {positioning.intro}
-          </p>
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {positioning.dimensions.map((d) => (
-              <div key={d.title} className="rounded-2xl bg-white/10 p-6 backdrop-blur">
-                <h3 className="heading-display text-lg text-adjafi-yellow">{d.title}</h3>
-                <p className="mt-2 font-open-sans text-sm text-white/85">{d.text}</p>
-              </div>
-            ))}
-          </div>
+      <SectionWithImage
+        eyebrow="Positionnement de l'évènement"
+        title="Un événement multi-dimensionnel"
+        imgSrc="/images/adjafi14/gallery-ribbon-cutting.jpg"
+        imgAlt="Positionnement institutionnel et culturel d'Adjafi 14"
+        sectionClassName="bg-adjafi-green text-white"
+        textClassName="text-white"
+        imageClassName="bg-white/10"
+      >
+        <p className="font-open-sans leading-relaxed text-white/85">{positioning.intro}</p>
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {positioning.dimensions.map((d) => (
+            <div key={d.title} className="rounded-2xl bg-white/10 p-6 backdrop-blur">
+              <h3 className="heading-display text-lg text-adjafi-yellow">{d.title}</h3>
+              <p className="mt-2 font-open-sans text-sm text-white/85">{d.text}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </SectionWithImage>
 
       {/* PRINCIPALES ACTIVITES */}
       <section className="mx-auto max-w-6xl px-4 py-20 lg:px-8">
@@ -413,18 +480,23 @@ export default function Adjafi14() {
       </section>
 
       {/* CONCLUSION */}
-      <section className="bg-adjafi-green py-20 text-white">
-        <div className="mx-auto max-w-3xl px-4 text-center lg:px-8">
-          <h1 className="heading-display text-3xl sm:text-4xl">Conclusion</h1>
-          <p className="mt-6 font-open-sans leading-relaxed text-white/85">{conclusion.text}</p>
-          <Link
-            to="/sponsorisez"
-            className="mt-8 inline-block rounded-full bg-white px-8 py-3 font-mont-black text-sm tracking-wide text-adjafi-green transition-transform hover:scale-105"
-          >
-            Devenir partenaire
-          </Link>
-        </div>
-      </section>
+      <SectionWithImage
+        eyebrow="Conclusion"
+        title="Un rendez-vous économique, culturel et social"
+        imgSrc="/images/adjafi14/gallery-live-band.jpg"
+        imgAlt="Concert et conclusion de la Foire Adjafi 14"
+        sectionClassName="bg-adjafi-green text-white"
+        textClassName="text-white"
+        imageClassName="bg-white/10"
+      >
+        <p className="font-open-sans leading-relaxed text-white/85">{conclusion.text}</p>
+        <Link
+          to="/sponsorisez"
+          className="mt-8 inline-block rounded-full bg-white px-8 py-3 font-mont-black text-sm tracking-wide text-adjafi-green transition-transform hover:scale-105"
+        >
+          Devenir partenaire
+        </Link>
+      </SectionWithImage>
 
       {/* CONTACTS SPECIFIQUES 14 */}
       <section className="mx-auto max-w-4xl px-4 py-16 text-center lg:px-8">

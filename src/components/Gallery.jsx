@@ -14,12 +14,14 @@ const defaultImages = [
 ];
 
 export default function Gallery({
-  eyebrow = "Merci pour votre participation!",
-  title = "La treizième Foire adjafi",
-  paragraph = "Un immense merci à tous les participants de la 13ème édition de la Foire Adjafi ! Grâce à votre énergie, vos talents et votre enthousiasme, cette édition a été un véritable succès. Exposants, partenaires, visiteurs et bénévoles, vous avez contribué à faire de cet événement un moment inoubliable pour tous. Nous vous invitons à revivre ces moments forts en explorant notre galerie photo et vidéo.",
-  linkTo = "/adjafi-13",
+  eyebrow = "En avant pour 2026",
+  title = "Cap sur la 14ème édition",
+  paragraph = "Découvrez l'esprit de la Foire Adjafi à travers des images inspirantes et préparez-vous à vivre une expérience encore plus dynamique.",
+  linkTo = "/adjafi-14",
   images = defaultImages,
 }) {
+  const scrollImages = images.slice(0, 8);
+
   return (
     <section className="bg-adjafi-ink py-20 text-white">
       <div className="mx-auto max-w-3xl px-4 text-center lg:px-8">
@@ -34,19 +36,18 @@ export default function Gallery({
         </Link>
       </div>
 
-      <div className="mx-auto mt-14 grid max-w-7xl grid-cols-2 gap-3 px-4 sm:grid-cols-3 lg:grid-cols-5 lg:px-8">
-        {images.map((src, i) => (
-          <div
-            key={src}
-            className={`overflow-hidden rounded-xl ${i === 0 ? "col-span-2 row-span-2" : ""}`}
-          >
-            <img
-              src={src}
-              alt={`Foire Adjafi ${i + 1}`}
-              className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
-            />
-          </div>
-        ))}
+      <div className="mx-auto mt-14 overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl">
+        <div className="marquee-track flex items-center gap-4 px-6 py-6">
+          {scrollImages.concat(scrollImages).map((src, index) => (
+            <div key={`${src}-${index}`} className="min-w-[260px] overflow-hidden rounded-3xl shadow-lg">
+              <img
+                src={src}
+                alt={`Foire Adjafi ${index + 1}`}
+                className="h-64 w-full object-cover transition-transform duration-700 hover:scale-110"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
