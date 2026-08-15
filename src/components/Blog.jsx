@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { journalHighlights } from "../data/adjafi14";
+import { blogPosts } from "../data/siteData";
 import BlogCard from "./BlogCard";
 import TouchCarousel from "./TouchCarousel";
 
 export default function Blog() {
-  const featured = journalHighlights;
+  const featured = blogPosts;
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
       <div className="text-center">
@@ -16,8 +16,8 @@ export default function Blog() {
 
       <div className="mt-14">
         <TouchCarousel itemClassName="min-w-[320px] max-w-[320px]" className="no-scrollbar px-4 py-4">
-          {featured.map((post, index) => (
-            <div key={`${post.slug}-${index}`}>
+          {featured.map((post) => (
+            <div key={post.slug}>
               <BlogCard post={post} />
             </div>
           ))}
