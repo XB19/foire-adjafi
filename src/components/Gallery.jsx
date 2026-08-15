@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import TouchCarousel from "./TouchCarousel";
 
 const defaultImages = [
   "/images/adjafi14/gallery-vip-row.jpg",
@@ -37,9 +38,9 @@ export default function Gallery({
       </div>
 
       <div className="mx-auto mt-14 overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl">
-        <div className="marquee-track flex items-center gap-4 px-6 py-6">
-          {scrollImages.concat(scrollImages).map((src, index) => (
-            <div key={`${src}-${index}`} className="min-w-[260px] overflow-hidden rounded-3xl shadow-lg">
+        <TouchCarousel itemClassName="min-w-[260px]" className="no-scrollbar px-6 py-6">
+          {scrollImages.map((src, index) => (
+            <div key={`${src}-${index}`} className="overflow-hidden rounded-3xl shadow-lg">
               <img
                 src={src}
                 alt={`Foire Adjafi ${index + 1}`}
@@ -47,7 +48,7 @@ export default function Gallery({
               />
             </div>
           ))}
-        </div>
+        </TouchCarousel>
       </div>
     </section>
   );

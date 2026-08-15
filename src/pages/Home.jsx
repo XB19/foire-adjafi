@@ -1,4 +1,5 @@
 import Hero from "../components/Hero";
+import Slogans from "../components/Slogans";
 import Countdown from "../components/Countdown";
 import Activities from "../components/Activities";
 import Sponsors from "../components/Sponsors";
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <Slogans />
       <Blog />
       <Flyers />
       <EditionHighlights />

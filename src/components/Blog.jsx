@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { journalHighlights } from "../data/adjafi14";
 import BlogCard from "./BlogCard";
+import TouchCarousel from "./TouchCarousel";
 
 export default function Blog() {
   const featured = journalHighlights;
@@ -9,18 +10,18 @@ export default function Blog() {
       <div className="text-center">
         <p className="eyebrow text-sm text-adjafi-green">Blog</p>
         <h1 className="heading-display mt-3 text-3xl text-adjafi-ink sm:text-4xl">
-          Notre Journal
+          Média &amp; Presse
         </h1>
       </div>
 
-      <div className="mt-14 overflow-hidden">
-        <div className="marquee-track flex gap-6 px-4 py-4">
-          {[...featured, ...featured].map((post, index) => (
-            <div key={`${post.slug}-${index}`} className="min-w-[320px] max-w-[320px] flex-none">
+      <div className="mt-14">
+        <TouchCarousel itemClassName="min-w-[320px] max-w-[320px]" className="no-scrollbar px-4 py-4">
+          {featured.map((post, index) => (
+            <div key={`${post.slug}-${index}`}>
               <BlogCard post={post} />
             </div>
           ))}
-        </div>
+        </TouchCarousel>
       </div>
 
       <div className="mt-16 text-center">

@@ -81,9 +81,6 @@ body {
   .animate-fade-up {
     animation: none;
   }
-  .marquee-track {
-    animation: none;
-  }
   .reveal-on-scroll {
     opacity: 1 !important;
     transform: none !important;
@@ -103,17 +100,13 @@ body {
   transform: translateY(0);
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.marquee-track {
-  animation: marquee 24s linear infinite;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 .eyebrow {

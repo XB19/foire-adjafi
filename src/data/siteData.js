@@ -21,7 +21,7 @@ export const navLinks = [
     ],
   },
   { label: "NOS EXPOSANTS", href: "/nos-exposants" },
-  { label: "NOTRE JOURNAL", href: "/journal" },
+  { label: "MÉDIA & PRESSE", href: "/journal" },
 ];
 
 export const heroStats = [
@@ -33,67 +33,44 @@ export const heroStats = [
 
 export const activities = [
   {
-    icon: "handshake",
-    title: "Expositions",
-    subtitle: "Des exposants togolais et de la sous région",
-    description:
-      "La Foire Adjafi vous invite à découvrir les expositions, vitrine du savoir-faire togolais. Explorez les stands d'exposants issus de divers secteurs, mettant en avant produits et innovations. Rencontrez des entrepreneurs passionnés, échangez sur les nouvelles tendances et soutenez l'économie locale. Une occasion unique pour saisir des opportunités et nouer des collaborations prometteuses.",
-  },
-  {
-    icon: "music",
-    title: "Animations Culturelles et Concerts",
-    subtitle: "CONCERT",
-    description:
-      "Vivez l'ambiance festive de la Foire Adjafi, célébrant la richesse artistique du Togo à travers des spectacles culturels et des concerts. Chaque soir, des soirées à thème comme le Gospel Show, Time to Dance et Adjafi Night Club animent l'événement. Vibrez avec les artistes nationaux et DJ de la sous-région pour des moments inoubliables.",
-  },
-  {
     icon: "chess",
-    title: "La Journée des communes",
-    subtitle: "SAG",
+    image: "/images/themes/journee-des-communes.png",
+    title: "Journée des Communes",
+    subtitle: "Institutionnel",
     description:
       "Une journée dédiée au développement des communes, réunissant les maires et les acteurs locaux. L'objectif est de discuter des défis, de partager des initiatives locales réussies et de renforcer les liens entre les différentes communes pour un développement harmonieux et inclusif.",
   },
   {
     icon: "people",
-    title: "La table ronde des chefs TPME",
-    subtitle: "La table ronde",
+    image: "/images/adjafi14/gallery-vip-row.jpg",
+    title: "Table ronde des chefs de TPME",
+    subtitle: "Networking",
     description:
-      "Une activité organisée en partenariat avec le RTPE, où les entrepreneurs des Très Petites et Moyennes Entreprises se rencontrent pour discuter de thématiques de développement. Échangez sur les meilleures pratiques, explorez des stratégies de croissance, et bénéficiez de conseils avisés pour renforcer vos entreprises.",
-  },
-  {
-    icon: "graduate",
-    title: "Masterclass & Ateliers",
-    subtitle: "Ateliers de formations",
-    description:
-      "Tout au long de la foire, participez à des ateliers de formation sur le thème de l'édition. Renforcez vos compétences entrepreneuriales à travers des sessions pratiques, animées par des experts, pour mieux saisir les opportunités du marché et développer votre activité.",
+      "Une activité réunissant les entrepreneurs des Très Petites et Moyennes Entreprises pour discuter de thématiques de développement. Échangez sur les meilleures pratiques, explorez des stratégies de croissance, et bénéficiez de conseils avisés pour renforcer vos entreprises.",
   },
   {
     icon: "glass",
-    title: "Salon des apéros et des gourmandises",
+    image: "/images/themes/salon-des-aperos.png",
+    title: "Salon des Apéros et Gourmandises",
     subtitle: "SAG",
     description:
       "Savourez des cocktails, liqueurs et délices togolais dans une ambiance festive. Participez à des démonstrations et ateliers de dégustation pour découvrir de nouvelles saveurs et les secrets des recettes locales.",
   },
   {
-    icon: "star",
-    title: "Sciences en Vac",
-    subtitle: "La plateforme des jeunes talents",
+    icon: "music",
+    image: "/images/themes/musika.png",
+    title: "Salon des Musiques Afro",
+    subtitle: "MUSIK'A",
     description:
-      "Participez à des ateliers interactifs de physique, chimie et anglais. Rencontrez des experts passionnés et enrichissez vos connaissances dans une ambiance stimulante, propice à l'apprentissage et à l'exploration des sciences.",
-  },
-  {
-    icon: "peace",
-    title: "Battle In the R",
-    subtitle: "Concours de dance",
-    description:
-      "Un concours mettant en compétition des groupes talentueux dans une ambiance survoltée. Hip hop, dancehall, coupé-décalé et bien plus encore sont au rendez-vous. Un spectacle captivant où les danseurs s'affrontent pour une cagnotte.",
+      "Un salon dédié aux rythmes d'Afrique, célébrant la richesse artistique du Togo à travers des spectacles et des concerts. Vibrez avec les artistes nationaux et de la sous-région pour des moments inoubliables.",
   },
   {
     icon: "star",
-    title: "Adjafi Fashion Day",
-    subtitle: "Défilé de mode",
+    image: "/images/themes/startups-innovantes.png",
+    title: "Place aux Startups Innovantes",
+    subtitle: "Innovation",
     description:
-      "Trois jours dédiés à la mode et à son développement, mettant en lumière le talent des stylistes togolais et de la sous-région. Le point culminant de cet événement est un défilé de mode grandiose, où créativité et style s'unissent pour sublimer les tendances africaines.",
+      "Un espace mis en lumière pour les jeunes startups togolaises et leurs solutions innovantes. Découvrez les initiatives qui transforment et soutiennent le développement de nos entrepreneurs tout en façonnant la prochaine génération.",
   },
 ];
 
@@ -230,7 +207,7 @@ export const blogPosts = [
     title: "Afrika Nature",
     date: "14 novembre 2024",
     category: "EXPOSANTS",
-    image: "/images/site/junabio.jpg",
+    image: "/images/adjafi14/gallery-spices-stand.jpg",
     excerpt:
       "Entreprise agroalimentaire pionnière dans la valorisation du souchet en Afrique de l'Ouest, présente au Togo, au Bénin et en Côte d'Ivoire...",
     content: [

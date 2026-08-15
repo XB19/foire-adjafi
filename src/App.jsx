@@ -17,7 +17,6 @@ import NosExposants from "./pages/NosExposants";
 import Journal from "./pages/Journal";
 import JournalPost from "./pages/JournalPost";
 import ContactPage from "./pages/ContactPage";
-import ScienceEnVac from "./pages/ScienceEnVac";
 import NotFound from "./pages/NotFound";
 
 function ScrollToTop() {
@@ -48,7 +47,6 @@ function App() {
           <Route path="/nos-exposants" element={<NosExposants />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/journal/:slug" element={<JournalPost />} />
-          <Route path="/science-en-vac" element={<ScienceEnVac />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

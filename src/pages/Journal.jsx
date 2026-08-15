@@ -16,7 +16,7 @@ export default function Journal() {
 
   return (
     <>
-      <PageHero eyebrow="Blog" title="Notre Journal" />
+      <PageHero eyebrow="Blog" title="Média &amp; Presse" />
 
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px]">

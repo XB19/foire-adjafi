@@ -62,7 +62,7 @@ export default function Hero() {
             to="/adjafi-14"
             className="mt-8 rounded-full bg-adjafi-green px-10 py-4 font-mont-black text-sm tracking-wide text-white transition-transform hover:scale-105 hover:bg-adjafi-green-dark"
           >
-            ALLONS Y
+            ALLONS-Y
           </Link>
         </div>
 

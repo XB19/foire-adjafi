@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Countdown from "../components/Countdown";
 import Contact from "../components/Contact";
+import Slogans from "../components/Slogans";
 import {
   edition14,
   context,
@@ -95,7 +96,7 @@ export default function Adjafi14() {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.1, rootMargin: "0px 0px -80px 0px" }
     );
 
     elements.forEach((element) => observer.observe(element));
@@ -128,10 +129,12 @@ export default function Adjafi14() {
             to="/exposez"
             className="mt-10 inline-block rounded-full bg-adjafi-green px-10 py-4 font-mont-black text-sm tracking-wide text-white transition-transform hover:scale-105 hover:bg-adjafi-green-dark"
           >
-            ALLONS Y
+            ALLONS-Y
           </Link>
         </div>
       </section>
+
+      <Slogans />
 
       {/* CONTEXTE */}
       <SectionWithImage

@@ -129,14 +129,14 @@ export const activities = [
     title: "Activités thématiques",
     items: [
       "Journée des communes",
-      "Village agroalimentaire",
-      "Ateliers jeunes",
-      "Science et innovation",
+      "Table ronde des chefs de TPME",
+      "Salon des Apéros et Gourmandises",
+      "Place aux Startups Innovantes",
     ],
   },
   {
     title: "Animations grand public",
-    items: ["Concert", "Défilés de mode", "Shows culturels"],
+    items: ["Concert", "Défilés de mode", "Salon des Musiques Afro (MUSIK'A)"],
   },
 ];
 
@@ -293,24 +293,21 @@ export const calendar = {
     },
     {
       day: "Dimanche 30 Août 2026",
-      items: [{ time: "21H00", label: "Concert Misik'a Jeunes Talents" }],
+      items: [{ time: "21H00", label: "Salon des Musiques Afro (MUSIK'A)" }],
     },
     {
       day: "Mercredi 02 Sept 2026",
       items: [{ time: "14H00", label: "Journée des communes" }],
     },
     {
-      day: "Vendredi 04 Sept 2026",
-      items: [
-        { time: "09H00", label: "Science en Vac — Lancement des activités" },
-        { time: "19H00", label: "Adjafi Fashion Day — Atelier défilé et concert" },
-      ],
+      day: "Jeudi 04 Sept 2026",
+      items: [{ time: "19H00", label: "Adjafi Fashion Day — Atelier défilé et concert" }],
     },
     {
       day: "Samedi 05 Sept 2026",
       items: [
         { time: "13H00", label: "Salon des apéros et gourmandises" },
-        { time: "16H00", label: "Présentation des petits projets innovants" },
+        { time: "16H00", label: "Place aux Startups Innovantes" },
         { time: "23H00", label: "Super Club, la discothèque de la foire" },
       ],
     },

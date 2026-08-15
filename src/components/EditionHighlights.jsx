@@ -1,4 +1,5 @@
 import { edition14, theme, gallery14 } from "../data/adjafi14";
+import TouchCarousel from "./TouchCarousel";
 
 export default function EditionHighlights() {
   const cards = [
@@ -45,15 +46,13 @@ export default function EditionHighlights() {
       </div>
 
       <div className="mt-16 overflow-hidden rounded-[2rem] border border-adjafi-gray-light bg-white/5 p-4 shadow-2xl">
-        <div className="relative overflow-hidden">
-          <div className="marquee-track flex gap-5 px-2 py-4">
-            {images.concat(images).map((image, index) => (
-              <div key={`${image}-${index}`} className="min-w-[260px] flex-shrink-0 overflow-hidden rounded-3xl bg-adjafi-ink shadow-xl">
-                <img src={image.src} alt={`Prévisualisation ${index + 1}`} className="h-64 w-full object-cover transition-transform duration-700 hover:scale-105" />
-              </div>
-            ))}
-          </div>
-        </div>
+        <TouchCarousel itemClassName="min-w-[260px]" className="no-scrollbar py-4">
+          {images.map((image, index) => (
+            <div key={`${image.src}-${index}`} className="overflow-hidden rounded-3xl bg-adjafi-ink shadow-xl">
+              <img src={image.src} alt={`Prévisualisation ${index + 1}`} className="h-64 w-full object-cover transition-transform duration-700 hover:scale-105" />
+            </div>
+          ))}
+        </TouchCarousel>
       </div>
     </section>
   );
