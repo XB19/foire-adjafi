@@ -334,6 +334,8 @@ export const gallery14 = [
   { src: "/images/adjafi14/gallery-products.jpg", category: "Exposition" },
   { src: "/images/adjafi14/gallery-fashion-stand.jpg", category: "Exposition" },
   { src: "/images/adjafi14/gallery-spices-stand.jpg", category: "Exposition" },
+  { src: "/images/adjafi14/gallery-spice-tasting.jpg", category: "Exposition" },
+  { src: "/images/adjafi14/gallery-liqueur-tasting.jpg", category: "Exposition" },
   { src: "/images/adjafi14/gallery-electronics-stand.jpg", category: "Exposition" },
   { src: "/images/adjafi14/gallery-night-lounge.jpg", category: "Concert" },
   { src: "/images/adjafi14/gallery-crowd.jpg", category: "Concert" },

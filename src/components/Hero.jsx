@@ -67,14 +67,14 @@ export default function Hero() {
         </div>
 
         <div className="mt-16 w-full">
-          <div className="mx-auto w-[calc(100%-2rem)] max-w-5xl rounded-3xl bg-[#ff7a00] bg-opacity-95 p-6 sm:p-8 shadow-2xl ring-1 ring-black/10">
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 text-center">
+          <div className="mx-auto w-[calc(100%-2rem)] max-w-5xl rounded-3xl bg-adjafi-green bg-opacity-95 p-6 sm:p-8 shadow-2xl ring-1 ring-black/10">
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6 text-center">
               {heroStats.map((stat) => (
                 <div key={stat.label} className="py-4">
-                  <div className="heading-display text-4xl lg:text-5xl text-white">
+                  <div className="heading-display text-3xl lg:text-4xl text-adjafi-yellow">
                     <Counter to={stat.value} suffix={stat.suffix} />
                   </div>
-                  <p className="mt-2 font-open-sans text-xs uppercase tracking-wide text-white/90 sm:text-sm">
+                  <p className="mt-2 font-open-sans text-xs uppercase tracking-wide text-white/90">
                     {stat.label}
                   </p>
                 </div>

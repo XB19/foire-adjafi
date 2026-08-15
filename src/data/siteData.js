@@ -25,10 +25,12 @@ export const navLinks = [
 ];
 
 export const heroStats = [
-  { label: "Jours", value: 18, suffix: "" },
-  { label: "Exposants", value: 300, suffix: "+" },
-  { label: "Emplois durables", value: 1000, suffix: "+" },
-  { label: "Visiteurs / jour", value: 8000, suffix: "+" },
+  { label: "Jours d'activités", value: 18, suffix: "" },
+  { label: "Entreprises exposantes", value: 254, suffix: "" },
+  { label: "Femmes entrepreneurs", value: 51, suffix: "%" },
+  { label: "Emplois créés", value: 600, suffix: "+" },
+  { label: "Visiteurs", value: 8500, suffix: "" },
+  { label: "Exposants sous-région", value: 11, suffix: "%" },
 ];
 
 export const activities = [
@@ -44,9 +46,9 @@ export const activities = [
     icon: "people",
     image: "/images/adjafi14/gallery-vip-row.jpg",
     title: "Table ronde des chefs de TPME",
-    subtitle: "Networking",
+    subtitle: "Bilan & distinction",
     description:
-      "Une activité réunissant les entrepreneurs des Très Petites et Moyennes Entreprises pour discuter de thématiques de développement. Échangez sur les meilleures pratiques, explorez des stratégies de croissance, et bénéficiez de conseils avisés pour renforcer vos entreprises.",
+      "Une activité bilan et de distinction qui permet de partager les expériences, renforcer les partenariats, dresser le bilan de la foire et distinguer les exposants, partenaires et acteurs les plus remarquables, afin de valoriser leurs contributions et encourager l'excellence entrepreneuriale.",
   },
   {
     icon: "glass",
