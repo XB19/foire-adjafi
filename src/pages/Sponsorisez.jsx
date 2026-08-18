@@ -26,14 +26,17 @@ const benefits = [
 ];
 
 const partnerLogos = [
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.16-300x300.jpeg",
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.15-1-300x300.jpeg",
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.13-300x300.jpeg",
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.13-1-300x300.jpeg",
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.11-1-300x300.jpeg",
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.11-300x300.jpeg",
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.10-300x300.jpeg",
-  "/images/site/WhatsApp-Image-2024-07-30-at-13.06.10-1-300x300.jpeg",
+  { src: "/images/partners/togo-republic.png", name: "République Togolaise" },
+  { src: "/images/partners/cci-togo.png", name: "CCI Togo" },
+  { src: "/images/partners/bb.png", name: "BB" },
+  { src: "/images/partners/ecobank.png", name: "Ecobank" },
+  { src: "/images/partners/adtpme.png", name: "ADTPME" },
+  { src: "/images/partners/maxkom.png", name: "Maxkom" },
+  { src: "/images/partners/commune-agoe-nyive.png", name: "Commune Agoè-Nyivé 1" },
+  { src: "/images/partners/cnj-togo.png", name: "CNJ Togo" },
+  { src: "/images/partners/sn-tpme.png", name: "SN-TPME" },
+  { src: "/images/partners/fanga-music.png", name: "Fanga Music" },
+  { src: "/images/partners/r-respect.png", name: "R Reespect" },
 ];
 
 export default function Sponsorisez() {
@@ -94,10 +97,10 @@ export default function Sponsorisez() {
         <div className="mt-14 grid grid-cols-2 gap-6 sm:grid-cols-4">
           {partnerLogos.map((logo) => (
             <div
-              key={logo}
-              className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-adjafi-gray-light bg-white p-4"
+              key={logo.src}
+              className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-adjafi-gray-light bg-white p-5"
             >
-              <img src={logo} alt="Partenaire" className="h-full w-full object-cover" />
+              <img src={logo.src} alt={logo.name} className="h-full w-full object-contain" />
             </div>
           ))}
         </div>
