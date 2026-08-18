@@ -27,16 +27,16 @@ const benefits = [
 
 const partnerLogos = [
   { src: "/images/partners/togo-republic.png", name: "République Togolaise" },
-  { src: "/images/partners/cci-togo.png", name: "CCI Togo" },
-  { src: "/images/partners/bb.png", name: "BB" },
+  { src: "/images/partners/cao-togo.png", name: "CAO Togo — Confédération des Agriculteurs du Togo" },
+  { src: "/images/partners/bb.png", name: "Brasseries BB Lomé S.A." },
   { src: "/images/partners/ecobank.png", name: "Ecobank" },
   { src: "/images/partners/adtpme.png", name: "ADTPME" },
   { src: "/images/partners/maxkom.png", name: "Maxkom" },
-  { src: "/images/partners/commune-agoe-nyive.png", name: "Commune Agoè-Nyivé 1" },
-  { src: "/images/partners/cnj-togo.png", name: "CNJ Togo" },
+  { src: "/images/partners/jna.png", name: "Journée Nationale de l'Arbre (JNA)" },
+  { src: "/images/partners/cci-togo.png", name: "Chambre de Commerce et d'Industrie du Togo" },
   { src: "/images/partners/sn-tpme.png", name: "SN-TPME" },
-  { src: "/images/partners/fanga-music.png", name: "Fanga Music" },
-  { src: "/images/partners/r-respect.png", name: "R Reespect" },
+  { src: "/images/partners/fanca-music.png", name: "Fanca Music" },
+  { src: "/images/partners/r-respect.png", name: "Réespect" },
 ];
 
 export default function Sponsorisez() {
