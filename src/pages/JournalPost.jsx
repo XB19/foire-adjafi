@@ -48,7 +48,9 @@ export default function JournalPost() {
       <PageHero eyebrow={post.category} title={post.title} subtitle={post.date} />
 
       <article className="mx-auto max-w-3xl px-4 py-16 lg:px-8">
-        <img src={post.image} alt={post.title} className="w-full rounded-2xl object-cover" />
+        {post.image && (
+          <img src={post.image} alt={post.title} className="w-full rounded-2xl object-cover" />
+        )}
         <div className="mt-10">
           {post.content.map((block, i) => (
             <Block key={i} block={block} />
@@ -75,7 +77,11 @@ export default function JournalPost() {
                   to={`/journal/${p.slug}`}
                   className="overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-lg"
                 >
-                  <img src={p.image} alt={p.title} className="h-48 w-full object-cover" />
+                  {p.image ? (
+                    <img src={p.image} alt={p.title} className="h-48 w-full object-cover" />
+                  ) : (
+                    <div className="h-48 w-full bg-adjafi-gray-light" />
+                  )}
                   <div className="p-6">
                     <p className="font-open-sans text-xs text-adjafi-gray">{p.date}</p>
                     <h3 className="heading-display mt-2 text-base text-adjafi-ink">{p.title}</h3>

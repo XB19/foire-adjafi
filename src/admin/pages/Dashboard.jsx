@@ -1,21 +1,21 @@
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaNewspaper, FaStore, FaHandshake, FaArrowRight } from "react-icons/fa6";
-import { useSupabaseTable } from "../hooks/useSupabaseTable";
-import SupabaseNotice from "../components/SupabaseNotice";
-import { isSupabaseConfigured } from "../../lib/supabaseClient";
+import { useApiTable } from "../hooks/useApiTable";
+import ApiNotice from "../components/ApiNotice";
+import { isApiConfigured } from "../../lib/apiClient";
 
 export default function Dashboard() {
-  const messages = useSupabaseTable("contact_messages");
-  const articles = useSupabaseTable("journal_posts");
-  const exposants = useSupabaseTable("exposants");
-  const partners = useSupabaseTable("partners");
+  const messages = useApiTable("contact_messages");
+  const articles = useApiTable("journal_posts");
+  const exposants = useApiTable("exposants");
+  const partners = useApiTable("partners");
 
   const unread = messages.rows.filter((m) => !m.read).length;
 
   const cards = [
     {
       label: "Messages non lus",
-      value: isSupabaseConfigured ? unread : "—",
+      value: isApiConfigured ? unread : "—",
       total: messages.rows.length,
       icon: FaEnvelope,
       to: "/admin/messages",
@@ -23,21 +23,21 @@ export default function Dashboard() {
     },
     {
       label: "Articles publiés",
-      value: isSupabaseConfigured ? articles.rows.length : "—",
+      value: isApiConfigured ? articles.rows.length : "—",
       icon: FaNewspaper,
       to: "/admin/articles",
       color: "bg-adjafi-ink",
     },
     {
       label: "Exposants",
-      value: isSupabaseConfigured ? exposants.rows.length : "—",
+      value: isApiConfigured ? exposants.rows.length : "—",
       icon: FaStore,
       to: "/admin/exposants",
       color: "bg-adjafi-yellow-dark",
     },
     {
       label: "Partenaires",
-      value: isSupabaseConfigured ? partners.rows.length : "—",
+      value: isApiConfigured ? partners.rows.length : "—",
       icon: FaHandshake,
       to: "/admin/partenaires",
       color: "bg-adjafi-green",
@@ -52,7 +52,7 @@ export default function Dashboard() {
       </p>
 
       <div className="mt-8">
-        <SupabaseNotice />
+        <ApiNotice />
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

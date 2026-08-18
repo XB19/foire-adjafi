@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaTrash, FaEnvelopeOpen, FaEnvelope } from "react-icons/fa6";
-import { supabase } from "../../lib/supabaseClient";
-import { useSupabaseTable } from "../hooks/useSupabaseTable";
-import SupabaseNotice from "../components/SupabaseNotice";
+import { api } from "../../lib/apiClient";
+import { useApiTable } from "../hooks/useApiTable";
+import ApiNotice from "../components/ApiNotice";
 
 function formatDate(iso) {
   if (!iso) return "";
@@ -16,17 +16,16 @@ function formatDate(iso) {
 }
 
 export default function Messages() {
-  const { rows, loading, error, refresh, setRows } = useSupabaseTable("contact_messages");
+  const { rows, loading, error, setRows } = useApiTable("contact_messages");
   const [busyId, setBusyId] = useState(null);
 
   const toggleRead = async (row) => {
     setBusyId(row.id);
-    const { error: updateError } = await supabase
-      .from("contact_messages")
-      .update({ read: !row.read })
-      .eq("id", row.id);
-    if (!updateError) {
+    try {
+      await api.patch(`/contact_messages/${row.id}`, { read: !row.read });
       setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, read: !row.read } : r)));
+    } catch {
+      // leave the row untouched on failure
     }
     setBusyId(null);
   };
@@ -34,9 +33,11 @@ export default function Messages() {
   const remove = async (row) => {
     if (!window.confirm("Supprimer définitivement ce message ?")) return;
     setBusyId(row.id);
-    const { error: deleteError } = await supabase.from("contact_messages").delete().eq("id", row.id);
-    if (!deleteError) {
+    try {
+      await api.del(`/contact_messages/${row.id}`);
       setRows((prev) => prev.filter((r) => r.id !== row.id));
+    } catch {
+      // leave the row in place on failure
     }
     setBusyId(null);
   };
@@ -49,7 +50,7 @@ export default function Messages() {
       </p>
 
       <div className="mt-8">
-        <SupabaseNotice />
+        <ApiNotice />
       </div>
 
       {error && <p className="mb-4 font-open-sans text-sm text-red-600">{error}</p>}

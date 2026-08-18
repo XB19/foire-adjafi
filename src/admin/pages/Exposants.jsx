@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
 import { FaPlus, FaPen, FaTrash } from "react-icons/fa6";
-import { supabase } from "../../lib/supabaseClient";
-import { useSupabaseTable } from "../hooks/useSupabaseTable";
-import SupabaseNotice from "../components/SupabaseNotice";
+import { api } from "../../lib/apiClient";
+import { useApiTable } from "../hooks/useApiTable";
+import ApiNotice from "../components/ApiNotice";
 
 export default function Exposants() {
-  const { rows, loading, error, setRows } = useSupabaseTable("exposants", {
-    orderBy: "sort_order",
-    ascending: true,
-  });
+  const { rows, loading, error, setRows } = useApiTable("exposants");
 
   const remove = async (row) => {
     if (!window.confirm(`Supprimer l'exposant « ${row.name} » ?`)) return;
-    const { error: deleteError } = await supabase.from("exposants").delete().eq("id", row.id);
-    if (!deleteError) {
+    try {
+      await api.del(`/exposants/${row.id}`);
       setRows((prev) => prev.filter((r) => r.id !== row.id));
+    } catch {
+      // leave the row in place on failure
     }
   };
 
@@ -36,7 +35,7 @@ export default function Exposants() {
       </div>
 
       <div className="mt-8">
-        <SupabaseNotice />
+        <ApiNotice />
       </div>
 
       {error && <p className="mb-4 font-open-sans text-sm text-red-600">{error}</p>}

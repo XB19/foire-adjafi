@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PageHero from "../components/PageHero";
 import Contact from "../components/Contact";
-import { supabase, isSupabaseConfigured } from "../lib/supabaseClient";
+import { api, isApiConfigured } from "../lib/apiClient";
 import { FaLocationDot, FaPhone, FaEnvelope } from "react-icons/fa6";
 
 const infoBlocks = [
@@ -39,24 +39,24 @@ export default function ContactPage() {
     setStatus("sending");
     setError("");
 
-    if (!isSupabaseConfigured) {
+    if (!isApiConfigured) {
       setStatus("error");
-      setError("Supabase n'est pas encore configuré (voir .env.example)");
+      setError("L'API n'est pas encore configurée (voir .env.example)");
       return;
     }
 
-    const { error: supabaseError } = await supabase
-      .from("contact_messages")
-      .insert([{ name: form.name, phone: form.phone, message: form.message }]);
-
-    if (supabaseError) {
+    try {
+      await api.post("/contact_messages", {
+        name: form.name,
+        phone: form.phone,
+        message: form.message,
+      });
+      setStatus("success");
+      setForm({ name: "", phone: "", message: "" });
+    } catch (err) {
       setStatus("error");
-      setError(supabaseError.message);
-      return;
+      setError(err.message);
     }
-
-    setStatus("success");
-    setForm({ name: "", phone: "", message: "" });
   };
 
   return (
@@ -136,8 +136,8 @@ export default function ContactPage() {
             )}
             {status === "error" && (
               <p className="mt-4 font-open-sans text-sm text-red-600">
-                Une erreur est survenue{error ? ` : ${error}` : ""}. Vérifiez la configuration
-                Supabase (table "contact_messages").
+                Une erreur est survenue{error ? ` : ${error}` : ""}. Vérifiez que le serveur API
+                est bien démarré.
               </p>
             )}
           </form>

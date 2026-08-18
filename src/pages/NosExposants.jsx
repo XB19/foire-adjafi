@@ -15,7 +15,7 @@ const seedExhibitors = blogPosts
   }));
 
 export default function NosExposants() {
-  const managed = usePublicList("exposants", [], { orderBy: "sort_order", ascending: true }).map(
+  const managed = usePublicList("exposants", []).map(
     (e) => ({
       slug: e.slug,
       name: e.name,
@@ -37,11 +37,15 @@ export default function NosExposants() {
               key={exhibitor.slug}
               className="overflow-hidden rounded-2xl border border-adjafi-gray-light shadow-sm"
             >
-              <img
-                src={exhibitor.image}
-                alt={exhibitor.name}
-                className="h-64 w-full object-cover"
-              />
+              {exhibitor.image ? (
+                <img
+                  src={exhibitor.image}
+                  alt={exhibitor.name}
+                  className="h-64 w-full object-cover"
+                />
+              ) : (
+                <div className="h-64 w-full bg-adjafi-gray-light" />
+              )}
               <div className="p-8 text-center">
                 <h2 className="heading-display text-2xl text-adjafi-ink">{exhibitor.name}</h2>
                 <p className="mt-3 font-open-sans text-sm leading-relaxed text-adjafi-gray">

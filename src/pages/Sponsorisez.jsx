@@ -41,10 +41,10 @@ const seedPartnerLogos = [
 ];
 
 export default function Sponsorisez() {
-  const managedPartners = usePublicList("partners", [], {
-    orderBy: "sort_order",
-    ascending: true,
-  }).map((p) => ({ src: p.logo_url, name: p.name }));
+  const managedPartners = usePublicList("partners", []).map((p) => ({
+    src: p.logo_url,
+    name: p.name,
+  }));
   const partnerLogos = [...managedPartners, ...seedPartnerLogos];
 
   return (

@@ -1,12 +1,12 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { isSupabaseConfigured } from "../../lib/supabaseClient";
+import { isApiConfigured } from "../../lib/apiClient";
 
 export default function RequireAuth({ children }) {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  if (!isSupabaseConfigured) {
+  if (!isApiConfigured) {
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 

@@ -1,33 +1,54 @@
 # La Foire Adjafi — site React
 
-Reproduction fidèle et complète du site [lafoireadjafi.com](https://lafoireadjafi.com/) (contenu, couleurs, polices, images, toutes les pages) en React + Vite + Tailwind CSS, prête à être connectée à Supabase.
+Reproduction fidèle et complète du site [lafoireadjafi.com](https://lafoireadjafi.com/) (contenu, couleurs, polices, images, toutes les pages) en React + Vite + Tailwind CSS, avec une API maison (Node/Express) branchée sur une base PostgreSQL locale.
 
-## Démarrer
+## Démarrer (site public seul, sans base de données)
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Connecter Supabase
+Le site fonctionne déjà avec son contenu de départ (`src/data/siteData.js`). Pour activer le
+formulaire de contact et l'espace administrateur, il faut brancher la base de données ci-dessous.
 
-1. Créez un projet sur [supabase.com](https://supabase.com).
-2. Copiez `.env.example` en `.env` et renseignez `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`
-   (Project Settings → API dans Supabase).
-3. Ouvrez l'éditeur SQL du projet (SQL Editor → New query), collez le contenu de
-   [supabase/schema.sql](supabase/schema.sql) et exécutez-le. Cela crée les 4 tables utilisées par
-   le site et l'espace administrateur (`contact_messages`, `journal_posts`, `exposants`, `partners`)
-   avec les policies RLS adaptées (lecture publique, écriture réservée aux comptes connectés).
-4. Créez votre compte administrateur : Authentication → Users → Add user, avec l'email et le mot de
-   passe que vous utiliserez pour vous connecter sur `/admin/login`.
+## Connecter PostgreSQL
 
-Le client Supabase est déjà configuré dans [src/lib/supabaseClient.js](src/lib/supabaseClient.js).
+Le site (React, dans le navigateur) ne peut pas parler directement au protocole PostgreSQL — il lui
+faut une petite API HTTP devant la base. C'est le rôle du dossier [`server/`](server), un serveur
+Node/Express qui expose cette API et gère l'authentification de l'espace admin.
+
+1. **Créez une base PostgreSQL** (en local, `createdb fadf` ou `CREATE DATABASE fadf;` dans `psql`).
+2. **Configurez le serveur** : copiez `server/.env.example` en `server/.env` et renseignez vos
+   identifiants (`PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`), ainsi qu'un
+   `JWT_SECRET` (une longue chaîne aléatoire — sert à signer les sessions de connexion admin).
+3. **Créez les tables** :
+   ```bash
+   psql -U postgres -d fadf -f server/schema.sql
+   ```
+   (ou collez le contenu de [server/schema.sql](server/schema.sql) dans votre client SQL préféré).
+   Cela crée les 5 tables utilisées par le site : `admin_users`, `contact_messages`,
+   `journal_posts`, `exposants`, `partners`.
+4. **Installez les dépendances du serveur et créez votre compte administrateur** :
+   ```bash
+   npm install --prefix server
+   npm run create-admin --prefix server -- admin@lafoireadjafi.com "un-mot-de-passe-solide"
+   ```
+5. **Configurez le site** : copiez `.env.example` en `.env` à la racine — la valeur par défaut
+   (`VITE_API_URL=http://localhost:4000/api`) convient si vous lancez tout en local.
+6. **Lancez tout** :
+   ```bash
+   npm run dev:all
+   ```
+   (ou séparément : `npm run server` pour l'API, `npm run dev` pour le site).
+
+Connectez-vous ensuite sur `/admin/login` avec l'email et le mot de passe créés à l'étape 4.
 
 ## Espace administrateur
 
-Accessible sur `/admin/login` une fois Supabase configuré (voir ci-dessus). Design cohérent avec le
-site public (mêmes couleurs, même typographie) mais présenté comme un vrai tableau de bord :
-sidebar de navigation, cartes de statistiques, tableaux et formulaires.
+Accessible sur `/admin/login` une fois l'API et la base configurées (voir ci-dessus). Design
+cohérent avec le site public (mêmes couleurs, même typographie) mais présenté comme un vrai tableau
+de bord : sidebar de navigation, cartes de statistiques, tableaux et formulaires.
 
 - **Tableau de bord** — vue d'ensemble (messages non lus, nombre d'articles, d'exposants, de
   partenaires).
@@ -37,39 +58,30 @@ sidebar de navigation, cartes de statistiques, tableaux et formulaires.
 - **Exposants** — créer/modifier/supprimer les fiches de la page « Nos Exposants ».
 - **Partenaires** — ajouter/retirer les logos affichés sur la page « Sponsorisez ».
 
-Le site public lit désormais ce contenu directement dans Supabase (voir
-[src/hooks/usePublicList.js](src/hooks/usePublicList.js)) : ce qui est ajouté depuis l'admin
-apparaît automatiquement sur le site, en plus du contenu d'origine qui reste affiché tant que rien
-n'a été ajouté (aucune page ne peut donc se retrouver vide).
+L'authentification admin est un système maison (email + mot de passe, hashé avec bcrypt, session
+signée en JWT — voir [server/routes/auth.js](server/routes/auth.js)), sans dépendance externe.
+
+Le site public lit ce contenu via l'API (voir [src/hooks/usePublicList.js](src/hooks/usePublicList.js))
+et le fusionne avec le contenu de départ : ce qui est ajouté depuis l'admin apparaît automatiquement
+sur le site, en plus du contenu d'origine qui reste affiché tant que rien n'a été ajouté (aucune
+page ne peut donc se retrouver vide).
 
 ## Lancer avec Docker
 
-Le projet inclut un `Dockerfile` (build Vite + Nginx) et un `docker-compose.yml`.
+Le projet inclut un `Dockerfile` pour le site (build Vite + Nginx) et un pour l'API
+(`server/Dockerfile`), orchestrés par `docker-compose.yml`.
 
 ```bash
-docker compose up --build
+PGPASSWORD=votre-mot-de-passe JWT_SECRET=une-longue-chaine-aleatoire docker compose up --build
 ```
 
-Le site est alors servi sur [http://localhost:8080](http://localhost:8080).
+Le site est alors servi sur [http://localhost:8080](http://localhost:8080) et l'API sur
+[http://localhost:4000](http://localhost:4000). Le conteneur `api` se connecte à
+`host.docker.internal`, c'est-à-dire **votre PostgreSQL local, en dehors de Docker** — assurez-vous
+qu'il accepte les connexions entrantes (`postgresql.conf` → `listen_addresses`, `pg_hba.conf`).
 
-Pour connecter Supabase, les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` doivent être
-fournies **au moment du build** (Vite les intègre dans le bundle, elles ne peuvent pas être changées
-à l'exécution du conteneur) :
-
-```bash
-VITE_SUPABASE_URL=https://xxxx.supabase.co VITE_SUPABASE_ANON_KEY=xxxx docker compose up --build
-```
-
-Ou directement avec `docker build` :
-
-```bash
-docker build \
-  --build-arg VITE_SUPABASE_URL=https://xxxx.supabase.co \
-  --build-arg VITE_SUPABASE_ANON_KEY=xxxx \
-  -t foire-adjafi .
-
-docker run -p 8080:80 foire-adjafi
-```
+Variables disponibles (toutes optionnelles sauf `PGPASSWORD` et `JWT_SECRET`) : `PGHOST`, `PGPORT`,
+`PGUSER`, `PGDATABASE`, `CORS_ORIGIN`, `VITE_API_URL`.
 
 ## Pages incluses
 
@@ -91,22 +103,33 @@ Toutes les pages du site d'origine ont été reproduites :
 
 ## Structure
 
+**Site (React)**
 - `src/components/` — composants partagés (Header, Footer, Hero, PageHero, EditionRecap, Countdown,
   Activities, Gallery, BlogCard, Contact, Counter...).
 - `src/pages/` — une page par route publique, assemblée à partir des composants partagés.
 - `src/data/siteData.js` — contenu de départ (menu, statistiques, activités, articles, réseaux
   sociaux), utilisé tant qu'aucun contenu équivalent n'a été ajouté depuis l'admin.
-- `src/hooks/usePublicList.js` — fusionne le contenu géré dans Supabase avec le contenu de départ.
+- `src/lib/apiClient.js` — petit client `fetch` vers l'API (gère le token de connexion admin).
+- `src/hooks/usePublicList.js` — fusionne le contenu de l'API avec le contenu de départ.
 - `src/admin/` — espace administrateur : `layouts/` (structure de la page), `pages/` (tableau de
-  bord, messages, articles, exposants, partenaires), `context/AuthContext.jsx` (session Supabase),
+  bord, messages, articles, exposants, partenaires), `context/AuthContext.jsx` (session admin),
   `components/RequireAuth.jsx` (protection des routes).
-- `supabase/schema.sql` — tables et policies à exécuter dans Supabase.
 - `public/images/`, `public/images/site/`, `public/fonts/` — assets récupérés du site original
   (logos, photos de chaque édition, affiches, police "Mont").
 
+**API (Node/Express)** — dossier [`server/`](server), projet npm indépendant
+- `index.js` — point d'entrée, monte les routes.
+- `db.js` — pool de connexion PostgreSQL (`pg`).
+- `routes/auth.js` — connexion admin (bcrypt + JWT).
+- `routes/messages.js` — messages de contact (insertion publique, lecture/gestion admin).
+- `routes/crud.js` — fabrique de routes CRUD réutilisée pour `journal_posts`, `exposants`,
+  `partners` (lecture publique, écriture protégée par token).
+- `schema.sql` — tables à créer sur votre base.
+- `scripts/create-admin.js` — crée ou met à jour un compte administrateur.
+
 ## À faire ensuite
 
-Le site et l'espace administrateur sont complets et fonctionnels. Pistes d'amélioration possibles :
-un vrai champ d'upload d'images (actuellement une URL, à faire pointer vers Supabase Storage), la
-gestion des rôles si plusieurs administrateurs doivent avoir des droits différents, et l'ajout d'une
-page admin pour éditer les statistiques de la page d'accueil (`heroStats`).
+Le site et l'espace administrateur sont complets et fonctionnels contre une vraie base PostgreSQL.
+Pistes d'amélioration possibles : un vrai champ d'upload d'images (actuellement une URL), la gestion
+de plusieurs rôles administrateurs, et l'ajout d'une page admin pour éditer les statistiques de la
+page d'accueil (`heroStats`).

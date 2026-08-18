@@ -5,7 +5,11 @@ export default function BlogCard({ post }) {
   return (
     <article className="overflow-hidden rounded-2xl border border-adjafi-gray-light shadow-sm transition-shadow hover:shadow-lg">
       <Link to={href}>
-        <img src={post.image} alt={post.title} className="h-52 w-full object-cover" />
+        {post.image ? (
+          <img src={post.image} alt={post.title} className="h-52 w-full object-cover" />
+        ) : (
+          <div className="h-52 w-full bg-adjafi-gray-light" />
+        )}
       </Link>
       <div className="p-6">
         <div className="flex items-center gap-3">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { supabase } from "../../lib/supabaseClient";
+import { api } from "../../lib/apiClient";
 import { slugify } from "../utils/slugify";
 import ContentBlocksEditor from "../components/ContentBlocksEditor";
 
@@ -30,14 +30,8 @@ export default function ArticleForm() {
   useEffect(() => {
     if (isNew) return;
     (async () => {
-      const { data, error: fetchError } = await supabase
-        .from("journal_posts")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (fetchError) {
-        setError(fetchError.message);
-      } else if (data) {
+      try {
+        const data = await api.get(`/journal_posts/${id}`);
         setForm({
           title: data.title ?? "",
           slug: data.slug ?? "",
@@ -48,6 +42,8 @@ export default function ArticleForm() {
         });
         setBlocks(data.content?.length ? data.content : [{ type: "p", text: "" }]);
         setSlugTouched(true);
+      } catch (err) {
+        setError(err.message);
       }
       setLoading(false);
     })();
@@ -73,19 +69,18 @@ export default function ArticleForm() {
       updated_at: new Date().toISOString(),
     };
 
-    const query = isNew
-      ? supabase.from("journal_posts").insert([payload])
-      : supabase.from("journal_posts").update(payload).eq("id", id);
-
-    const { error: saveError } = await query;
-    setSaving(false);
-
-    if (saveError) {
-      setError(saveError.message);
-      return;
+    try {
+      if (isNew) {
+        await api.post("/journal_posts", payload);
+      } else {
+        await api.put(`/journal_posts/${id}`, payload);
+      }
+      navigate("/admin/articles");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
     }
-
-    navigate("/admin/articles");
   };
 
   if (loading) {

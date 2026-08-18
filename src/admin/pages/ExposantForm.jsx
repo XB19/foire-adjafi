@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { supabase } from "../../lib/supabaseClient";
+import { api } from "../../lib/apiClient";
 import { slugify } from "../utils/slugify";
 
 const emptyForm = {
@@ -27,16 +27,12 @@ export default function ExposantForm() {
   useEffect(() => {
     if (isNew) return;
     (async () => {
-      const { data, error: fetchError } = await supabase
-        .from("exposants")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (fetchError) {
-        setError(fetchError.message);
-      } else if (data) {
+      try {
+        const data = await api.get(`/exposants/${id}`);
         setForm({ ...emptyForm, ...data });
         setSlugTouched(true);
+      } catch (err) {
+        setError(err.message);
       }
       setLoading(false);
     })();
@@ -62,19 +58,18 @@ export default function ExposantForm() {
       updated_at: new Date().toISOString(),
     };
 
-    const query = isNew
-      ? supabase.from("exposants").insert([payload])
-      : supabase.from("exposants").update(payload).eq("id", id);
-
-    const { error: saveError } = await query;
-    setSaving(false);
-
-    if (saveError) {
-      setError(saveError.message);
-      return;
+    try {
+      if (isNew) {
+        await api.post("/exposants", payload);
+      } else {
+        await api.put(`/exposants/${id}`, payload);
+      }
+      navigate("/admin/exposants");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
     }
-
-    navigate("/admin/exposants");
   };
 
   if (loading) {

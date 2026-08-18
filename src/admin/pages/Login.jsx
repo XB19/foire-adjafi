@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { isSupabaseConfigured } from "../../lib/supabaseClient";
+import { isApiConfigured } from "../../lib/apiClient";
 
 export default function Login() {
   const { user, signIn } = useAuth();
@@ -12,7 +12,7 @@ export default function Login() {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
-  if (isSupabaseConfigured && user) {
+  if (isApiConfigured && user) {
     return <Navigate to={location.state?.from?.pathname ?? "/admin"} replace />;
   }
 
@@ -45,11 +45,11 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-8 shadow-2xl">
           <h1 className="heading-display text-xl text-adjafi-ink">Connexion</h1>
 
-          {!isSupabaseConfigured && (
+          {!isApiConfigured && (
             <p className="mt-4 rounded-lg bg-adjafi-yellow/20 px-4 py-3 font-open-sans text-sm text-adjafi-yellow-dark">
-              Supabase n'est pas encore configuré (voir <code>.env.example</code>). La connexion ne
-              fonctionnera qu'une fois <code>VITE_SUPABASE_URL</code> et{" "}
-              <code>VITE_SUPABASE_ANON_KEY</code> renseignés.
+              L'API n'est pas encore configurée (voir <code>.env.example</code>). La connexion ne
+              fonctionnera qu'une fois <code>VITE_API_URL</code> renseigné et le serveur{" "}
+              <code>server/</code> démarré.
             </p>
           )}
 
@@ -88,7 +88,7 @@ export default function Login() {
 
           <button
             type="submit"
-            disabled={status === "loading" || !isSupabaseConfigured}
+            disabled={status === "loading" || !isApiConfigured}
             className="mt-6 w-full rounded-full bg-adjafi-green px-8 py-3 font-mont-black text-sm tracking-wide text-white transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {status === "loading" ? "Connexion…" : "Se connecter"}

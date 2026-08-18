@@ -1,32 +1,30 @@
 import { useEffect, useState } from "react";
-import { supabase, isSupabaseConfigured } from "../lib/supabaseClient";
+import { api, isApiConfigured } from "../lib/apiClient";
 
 /**
  * Fetches rows managed from the admin dashboard and prepends them to the
  * site's built-in seed content, so pages keep working exactly as before
- * when Supabase isn't configured (or has no rows yet), and automatically
+ * when the API isn't configured (or has no rows yet), and automatically
  * pick up anything an administrator adds later.
  */
-export function usePublicList(table, fallback, { orderBy = "created_at", ascending = false } = {}) {
+export function usePublicList(resource, fallback) {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    if (!isSupabaseConfigured) return;
+    if (!isApiConfigured) return;
     let active = true;
 
-    supabase
-      .from(table)
-      .select("*")
-      .order(orderBy, { ascending })
-      .then(({ data, error }) => {
-        if (active && !error && data) setRows(data);
-      });
+    api
+      .get(`/${resource}`)
+      .then((data) => {
+        if (active && data) setRows(data);
+      })
+      .catch(() => {});
 
     return () => {
       active = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [table]);
+  }, [resource]);
 
   return [...rows, ...fallback];
 }

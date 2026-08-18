@@ -1,35 +1,43 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase, isSupabaseConfigured } from "../../lib/supabaseClient";
+import { api, isApiConfigured, getAuthToken, setAuthToken } from "../../lib/apiClient";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isSupabaseConfigured) {
+    if (!isApiConfigured || !getAuthToken()) {
       setLoading(false);
       return;
     }
 
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
-
-    return () => listener.subscription.unsubscribe();
+    api
+      .get("/auth/me")
+      .then((data) => setUser(data.user))
+      .catch(() => setAuthToken(null))
+      .finally(() => setLoading(false));
   }, []);
 
-  const signIn = (email, password) => supabase.auth.signInWithPassword({ email, password });
-  const signOut = () => supabase.auth.signOut();
+  const signIn = async (email, password) => {
+    try {
+      const data = await api.post("/auth/login", { email, password });
+      setAuthToken(data.token);
+      setUser(data.user);
+      return { error: null };
+    } catch (err) {
+      return { error: { message: err.message } };
+    }
+  };
+
+  const signOut = async () => {
+    setAuthToken(null);
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ session, user: session?.user ?? null, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

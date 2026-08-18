@@ -1,17 +1,19 @@
 import { Link } from "react-router-dom";
 import { FaPlus, FaPen, FaTrash } from "react-icons/fa6";
-import { supabase } from "../../lib/supabaseClient";
-import { useSupabaseTable } from "../hooks/useSupabaseTable";
-import SupabaseNotice from "../components/SupabaseNotice";
+import { api } from "../../lib/apiClient";
+import { useApiTable } from "../hooks/useApiTable";
+import ApiNotice from "../components/ApiNotice";
 
 export default function Articles() {
-  const { rows, loading, error, setRows } = useSupabaseTable("journal_posts");
+  const { rows, loading, error, setRows } = useApiTable("journal_posts");
 
   const remove = async (row) => {
     if (!window.confirm(`Supprimer l'article « ${row.title} » ?`)) return;
-    const { error: deleteError } = await supabase.from("journal_posts").delete().eq("id", row.id);
-    if (!deleteError) {
+    try {
+      await api.del(`/journal_posts/${row.id}`);
       setRows((prev) => prev.filter((r) => r.id !== row.id));
+    } catch {
+      // leave the row in place on failure
     }
   };
 
@@ -33,7 +35,7 @@ export default function Articles() {
       </div>
 
       <div className="mt-8">
-        <SupabaseNotice />
+        <ApiNotice />
       </div>
 
       {error && <p className="mb-4 font-open-sans text-sm text-red-600">{error}</p>}

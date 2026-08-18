@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa6";
-import { supabase } from "../../lib/supabaseClient";
-import { useSupabaseTable } from "../hooks/useSupabaseTable";
-import SupabaseNotice from "../components/SupabaseNotice";
+import { api } from "../../lib/apiClient";
+import { useApiTable } from "../hooks/useApiTable";
+import ApiNotice from "../components/ApiNotice";
 
 const emptyForm = { name: "", logo_url: "", sort_order: 0 };
 
 export default function Partners() {
-  const { rows, loading, error, setRows } = useSupabaseTable("partners", {
-    orderBy: "sort_order",
-    ascending: true,
-  });
+  const { rows, loading, error, setRows } = useApiTable("partners");
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
@@ -21,28 +18,25 @@ export default function Partners() {
     setFormError("");
 
     const payload = { ...form, sort_order: Number(form.sort_order) || 0 };
-    const { data, error: insertError } = await supabase
-      .from("partners")
-      .insert([payload])
-      .select()
-      .single();
 
-    setSaving(false);
-
-    if (insertError) {
-      setFormError(insertError.message);
-      return;
+    try {
+      const data = await api.post("/partners", payload);
+      setRows((prev) => [...prev, data].sort((a, b) => a.sort_order - b.sort_order));
+      setForm(emptyForm);
+    } catch (err) {
+      setFormError(err.message);
+    } finally {
+      setSaving(false);
     }
-
-    setRows((prev) => [...prev, data].sort((a, b) => a.sort_order - b.sort_order));
-    setForm(emptyForm);
   };
 
   const remove = async (row) => {
     if (!window.confirm(`Retirer « ${row.name} » des partenaires ?`)) return;
-    const { error: deleteError } = await supabase.from("partners").delete().eq("id", row.id);
-    if (!deleteError) {
+    try {
+      await api.del(`/partners/${row.id}`);
       setRows((prev) => prev.filter((r) => r.id !== row.id));
+    } catch {
+      // leave the row in place on failure
     }
   };
 
@@ -54,7 +48,7 @@ export default function Partners() {
       </p>
 
       <div className="mt-8">
-        <SupabaseNotice />
+        <ApiNotice />
       </div>
 
       <form
