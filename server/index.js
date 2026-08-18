@@ -7,7 +7,26 @@ import { createCrudRouter } from "./routes/crud.js";
 
 const app = express();
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:5183" }));
+// Accept a comma-separated CORS_ORIGIN list, and always allow both
+// localhost and 127.0.0.1 on the dev port — browsers treat them as
+// different origins even though they're the same machine, which is a
+// common source of "NetworkError when attempting to fetch resource".
+const defaultOrigins = ["http://localhost:5183", "http://127.0.0.1:5183"];
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+  : defaultOrigins;
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origine non autorisée par CORS : ${origin}`));
+      }
+    },
+  })
+);
 app.use(express.json());
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
