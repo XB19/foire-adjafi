@@ -24,51 +24,51 @@ const advantages = [
 const stands = [
   {
     name: "Prime",
-    items: ["Stand sous appâtâmes", "Espaces de 9m² soit 3x3m", "Bannière fronton"],
+    price: "94 000 FCFA",
+    items: ["Stand sous apatam", "Bannière de 9m²", "Bannière fronton (4x3m)"],
   },
   {
     name: "Extra",
-    items: [
-      "Tente pagode blanche",
-      "Espaces de 9m² soit 3x3m",
-      "1 Table – 1 chaise – Plancher",
-      "Bannière fronton",
-    ],
+    price: "128 000 FCFA",
+    items: ["Tente pagode blanche", "Espace de 9m² soit 3x3m", "Bannière fronton (4x3m)"],
     image: "/images/site/EXTRA-1024x749.png",
   },
   {
     name: "Hall",
-    items: ["Stand sous chapiteau", "Espaces de 9m² soit 3x3m", "Pelouse synthétique", "Bannière fronton"],
+    price: "158 000 FCFA",
+    items: [
+      "Stand sous chapiteaux",
+      "Espace de 9m² soit 3x3m",
+      "Pelouse synthétique",
+      "Bannière fronton (4x3m)",
+    ],
     image: "/images/site/HALL-1024x749.png",
   },
   {
     name: "Emergence",
+    price: "210 000 FCFA",
     items: [
       "Tente pagode blanche",
-      "Espaces de 9m² soit 3x3m",
+      "Espace de 9m² soit 3x3m",
       "Plancher et pelouse synthétique",
-      "1 Table – 1 chaise",
+      "Bannière fronton (4x3m)",
     ],
     image: "/images/site/EMERGENCE-1024x749.png",
   },
   {
-    name: "VIP",
+    name: "Partenaire",
+    price: "1 000 000 FCFA",
     items: [
       "Tente pagode blanche",
-      "Espaces de 25m² soit 5x5m",
+      "Espace de 25m² soit 5x5m",
       "Plancher et pelouse synthétique",
-      "1 Table – 2 chaises",
-      "Bannière fronton",
-    ],
-  },
-  {
-    name: "Restaurant",
-    items: [
-      "Type 1 : Appâtâmes couvert – Espace de 200m² soit 10x20m",
-      "Type 2 : Pagodes modernes – Espaces de 50m² soit 5x10m",
+      "Bannière fronton (4x3m)",
+      "Logo sur les supports de communication",
     ],
   },
 ];
+
+const reservationPhones = ["90 67 67 84", "79 23 53 36"];
 
 export default function Exposez() {
   return (
@@ -143,7 +143,10 @@ export default function Exposez() {
               )}
               <div className="p-6">
                 <h3 className="heading-display text-lg text-adjafi-ink">{stand.name}</h3>
-                <ul className="mt-3 space-y-2 font-open-sans text-sm text-adjafi-gray">
+                <span className="mt-2 inline-block rounded-full bg-adjafi-yellow px-3 py-1 font-mont-black text-xs text-adjafi-ink">
+                  {stand.price}
+                </span>
+                <ul className="mt-4 space-y-2 font-open-sans text-sm text-adjafi-gray">
                   {stand.items.map((item) => (
                     <li key={item} className="flex gap-2">
                       <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-adjafi-green" />
@@ -154,6 +157,24 @@ export default function Exposez() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-10 rounded-2xl bg-adjafi-ink px-8 py-6 text-center text-white">
+          <p className="heading-display text-lg">Réservez votre stand dès maintenant</p>
+          <p className="mt-2 font-open-sans text-sm text-white/70">
+            Tous les prix sont exprimés en FCFA et couvrent la durée complète de la foire.
+          </p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {reservationPhones.map((phone) => (
+              <a
+                key={phone}
+                href={`tel:+228${phone.replace(/\s/g, "")}`}
+                className="font-mont-black text-lg tracking-wide text-adjafi-yellow hover:underline"
+              >
+                +228 {phone}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
