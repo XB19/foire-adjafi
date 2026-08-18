@@ -2,10 +2,30 @@ import { Link } from "react-router-dom";
 import PageHero from "../components/PageHero";
 import Contact from "../components/Contact";
 import { blogPosts } from "../data/siteData";
+import { usePublicList } from "../hooks/usePublicList";
 
-const exhibitors = blogPosts.filter((p) => p.category === "EXPOSANTS");
+const seedExhibitors = blogPosts
+  .filter((p) => p.category === "EXPOSANTS")
+  .map((p) => ({
+    slug: p.slug,
+    name: p.title,
+    image: p.image,
+    description: p.excerpt,
+    href: `/journal/${p.slug}`,
+  }));
 
 export default function NosExposants() {
+  const managed = usePublicList("exposants", [], { orderBy: "sort_order", ascending: true }).map(
+    (e) => ({
+      slug: e.slug,
+      name: e.name,
+      image: e.image,
+      description: e.description,
+      href: `/nos-exposants/${e.slug}`,
+    })
+  );
+  const exhibitors = [...managed, ...seedExhibitors];
+
   return (
     <>
       <PageHero eyebrow="Nos exposants" title="Ils exposent à la Foire Adjafi" />
@@ -19,16 +39,16 @@ export default function NosExposants() {
             >
               <img
                 src={exhibitor.image}
-                alt={exhibitor.title}
+                alt={exhibitor.name}
                 className="h-64 w-full object-cover"
               />
               <div className="p-8 text-center">
-                <h2 className="heading-display text-2xl text-adjafi-ink">{exhibitor.title}</h2>
+                <h2 className="heading-display text-2xl text-adjafi-ink">{exhibitor.name}</h2>
                 <p className="mt-3 font-open-sans text-sm leading-relaxed text-adjafi-gray">
-                  {exhibitor.excerpt}
+                  {exhibitor.description}
                 </p>
                 <Link
-                  to={`/journal/${exhibitor.slug}`}
+                  to={exhibitor.href}
                   className="mt-6 inline-block rounded-full bg-adjafi-green px-6 py-3 font-mont-black text-xs tracking-wide text-white transition-transform hover:scale-105"
                 >
                   Découvrir

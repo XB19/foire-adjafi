@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "./components/Header";
@@ -14,10 +14,23 @@ import Adjafi1a9 from "./pages/Adjafi1a9";
 import Exposez from "./pages/Exposez";
 import Sponsorisez from "./pages/Sponsorisez";
 import NosExposants from "./pages/NosExposants";
+import ExposantDetail from "./pages/ExposantDetail";
 import Journal from "./pages/Journal";
 import JournalPost from "./pages/JournalPost";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
+
+import { AuthProvider } from "./admin/context/AuthContext";
+import RequireAuth from "./admin/components/RequireAuth";
+import AdminLayout from "./admin/layouts/AdminLayout";
+import Login from "./admin/pages/Login";
+import Dashboard from "./admin/pages/Dashboard";
+import Messages from "./admin/pages/Messages";
+import Articles from "./admin/pages/Articles";
+import ArticleForm from "./admin/pages/ArticleForm";
+import ExposantsAdmin from "./admin/pages/Exposants";
+import ExposantForm from "./admin/pages/ExposantForm";
+import Partners from "./admin/pages/Partners";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -27,13 +40,24 @@ function ScrollToTop() {
   return null;
 }
 
-function App() {
+function PublicLayout() {
   return (
     <div className="flex min-h-screen flex-col">
-      <ScrollToTop />
       <Header />
       <main className="flex-1">
-        <Routes>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <ScrollToTop />
+      <Routes>
+        <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/a-propos" element={<APropos />} />
           <Route path="/adjafi-14" element={<Adjafi14 />} />
@@ -45,14 +69,34 @@ function App() {
           <Route path="/sponsorisez" element={<Sponsorisez />} />
           <Route path="/exposez" element={<Exposez />} />
           <Route path="/nos-exposants" element={<NosExposants />} />
+          <Route path="/nos-exposants/:slug" element={<ExposantDetail />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/journal/:slug" element={<JournalPost />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+        </Route>
+
+        <Route path="/admin/login" element={<Login />} />
+        <Route
+          path="/admin"
+          element={
+            <RequireAuth>
+              <AdminLayout />
+            </RequireAuth>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="articles" element={<Articles />} />
+          <Route path="articles/nouveau" element={<ArticleForm />} />
+          <Route path="articles/:id" element={<ArticleForm />} />
+          <Route path="exposants" element={<ExposantsAdmin />} />
+          <Route path="exposants/nouveau" element={<ExposantForm />} />
+          <Route path="exposants/:id" element={<ExposantForm />} />
+          <Route path="partenaires" element={<Partners />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 

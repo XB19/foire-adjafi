@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import PageHero from "../components/PageHero";
 import Contact from "../components/Contact";
+import { usePublicList } from "../hooks/usePublicList";
 
 const benefits = [
   {
@@ -25,7 +26,7 @@ const benefits = [
   },
 ];
 
-const partnerLogos = [
+const seedPartnerLogos = [
   { src: "/images/partners/togo-republic.png", name: "République Togolaise" },
   { src: "/images/partners/cao-togo.png", name: "CAO Togo — Confédération des Agriculteurs du Togo" },
   { src: "/images/partners/bb.png", name: "Brasseries BB Lomé S.A." },
@@ -40,6 +41,12 @@ const partnerLogos = [
 ];
 
 export default function Sponsorisez() {
+  const managedPartners = usePublicList("partners", [], {
+    orderBy: "sort_order",
+    ascending: true,
+  }).map((p) => ({ src: p.logo_url, name: p.name }));
+  const partnerLogos = [...managedPartners, ...seedPartnerLogos];
+
   return (
     <>
       <PageHero

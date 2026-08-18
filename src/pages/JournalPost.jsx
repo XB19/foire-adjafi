@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import PageHero from "../components/PageHero";
 import Contact from "../components/Contact";
 import { blogPosts } from "../data/siteData";
+import { usePublicList } from "../hooks/usePublicList";
 
 function Block({ block }) {
   if (block.type === "h3") {
@@ -26,7 +27,8 @@ function Block({ block }) {
 
 export default function JournalPost() {
   const { slug } = useParams();
-  const post = blogPosts.find((p) => p.slug === slug);
+  const allPosts = usePublicList("journal_posts", blogPosts);
+  const post = allPosts.find((p) => p.slug === slug);
 
   if (!post) {
     return (
@@ -39,7 +41,7 @@ export default function JournalPost() {
     );
   }
 
-  const others = blogPosts.filter((p) => p.slug !== slug).slice(0, 2);
+  const others = allPosts.filter((p) => p.slug !== slug).slice(0, 2);
 
   return (
     <>

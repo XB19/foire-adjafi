@@ -11,17 +11,36 @@ npm run dev
 
 ## Connecter Supabase
 
-1. Copiez `.env.example` en `.env`.
-2. Renseignez `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` (Project Settings → API dans Supabase).
-3. Le client est déjà configuré dans [src/lib/supabaseClient.js](src/lib/supabaseClient.js) :
+1. Créez un projet sur [supabase.com](https://supabase.com).
+2. Copiez `.env.example` en `.env` et renseignez `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`
+   (Project Settings → API dans Supabase).
+3. Ouvrez l'éditeur SQL du projet (SQL Editor → New query), collez le contenu de
+   [supabase/schema.sql](supabase/schema.sql) et exécutez-le. Cela crée les 4 tables utilisées par
+   le site et l'espace administrateur (`contact_messages`, `journal_posts`, `exposants`, `partners`)
+   avec les policies RLS adaptées (lecture publique, écriture réservée aux comptes connectés).
+4. Créez votre compte administrateur : Authentication → Users → Add user, avec l'email et le mot de
+   passe que vous utiliserez pour vous connecter sur `/admin/login`.
 
-```js
-import { supabase } from "./lib/supabaseClient";
-```
+Le client Supabase est déjà configuré dans [src/lib/supabaseClient.js](src/lib/supabaseClient.js).
 
-Le formulaire de [src/pages/ContactPage.jsx](src/pages/ContactPage.jsx) écrit déjà dans une table
-`contact_messages` (colonnes `name`, `phone`, `message`) — créez cette table dans Supabase pour
-qu'il fonctionne, ou adaptez le code à votre propre schéma.
+## Espace administrateur
+
+Accessible sur `/admin/login` une fois Supabase configuré (voir ci-dessus). Design cohérent avec le
+site public (mêmes couleurs, même typographie) mais présenté comme un vrai tableau de bord :
+sidebar de navigation, cartes de statistiques, tableaux et formulaires.
+
+- **Tableau de bord** — vue d'ensemble (messages non lus, nombre d'articles, d'exposants, de
+  partenaires).
+- **Messages** — messages reçus via le formulaire de contact du site (marquer lu/non lu, supprimer).
+- **Journal** — créer/modifier/supprimer les articles de la page « Média & Presse », avec un éditeur
+  de contenu par blocs (paragraphe, sous-titre, liste à puces).
+- **Exposants** — créer/modifier/supprimer les fiches de la page « Nos Exposants ».
+- **Partenaires** — ajouter/retirer les logos affichés sur la page « Sponsorisez ».
+
+Le site public lit désormais ce contenu directement dans Supabase (voir
+[src/hooks/usePublicList.js](src/hooks/usePublicList.js)) : ce qui est ajouté depuis l'admin
+apparaît automatiquement sur le site, en plus du contenu d'origine qui reste affiché tant que rien
+n'a été ajouté (aucune page ne peut donc se retrouver vide).
 
 ## Lancer avec Docker
 
@@ -65,23 +84,29 @@ Toutes les pages du site d'origine ont été reproduites :
 - `/sponsorisez` — Devenir sponsor (avantages, partenaires)
 - `/nos-exposants` — Annuaire des exposants
 - `/journal` — Liste des articles (avec filtre par catégorie)
-- `/journal/:slug` — 7 articles complets
-- `/science-en-vac` — Page dédiée à l'activité Sciences en Vac
+- `/journal/:slug` — Articles complets
+- `/nos-exposants/:slug` — Fiche détaillée d'un exposant géré depuis l'admin
 - `/contact` — Formulaire de contact + coordonnées
+- `/admin/login`, `/admin/*` — Espace administrateur (voir plus haut)
 
 ## Structure
 
 - `src/components/` — composants partagés (Header, Footer, Hero, PageHero, EditionRecap, Countdown,
   Activities, Gallery, BlogCard, Contact, Counter...).
-- `src/pages/` — une page par route, assemblée à partir des composants partagés.
-- `src/data/siteData.js` — tout le contenu texte (menu, statistiques, activités, articles de blog,
-  réseaux sociaux) centralisé pour être facile à éditer ou à remplacer par des données Supabase.
+- `src/pages/` — une page par route publique, assemblée à partir des composants partagés.
+- `src/data/siteData.js` — contenu de départ (menu, statistiques, activités, articles, réseaux
+  sociaux), utilisé tant qu'aucun contenu équivalent n'a été ajouté depuis l'admin.
+- `src/hooks/usePublicList.js` — fusionne le contenu géré dans Supabase avec le contenu de départ.
+- `src/admin/` — espace administrateur : `layouts/` (structure de la page), `pages/` (tableau de
+  bord, messages, articles, exposants, partenaires), `context/AuthContext.jsx` (session Supabase),
+  `components/RequireAuth.jsx` (protection des routes).
+- `supabase/schema.sql` — tables et policies à exécuter dans Supabase.
 - `public/images/`, `public/images/site/`, `public/fonts/` — assets récupérés du site original
   (logos, photos de chaque édition, affiches, police "Mont").
 
 ## À faire ensuite
 
-Le site est visuellement et structurellement complet. Les prochaines étapes naturelles côté
-Supabase : brancher le formulaire de contact sur une vraie table, gérer les articles du journal et
-la liste des exposants depuis la base plutôt que depuis `siteData.js`, et ajouter l'authentification
-si un espace d'administration est prévu.
+Le site et l'espace administrateur sont complets et fonctionnels. Pistes d'amélioration possibles :
+un vrai champ d'upload d'images (actuellement une URL, à faire pointer vers Supabase Storage), la
+gestion des rôles si plusieurs administrateurs doivent avoir des droits différents, et l'ajout d'une
+page admin pour éditer les statistiques de la page d'accueil (`heroStats`).

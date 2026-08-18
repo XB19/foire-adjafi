@@ -4,15 +4,17 @@ import PageHero from "../components/PageHero";
 import BlogCard from "../components/BlogCard";
 import Contact from "../components/Contact";
 import { blogPosts, blogCategories, socialLinks } from "../data/siteData";
+import { usePublicList } from "../hooks/usePublicList";
 import { FaFacebookF, FaTiktok, FaYoutube } from "react-icons/fa6";
 
 export default function Journal() {
   const [category, setCategory] = useState("All Post");
+  const allPosts = usePublicList("journal_posts", blogPosts);
 
   const filtered = useMemo(() => {
-    if (category === "All Post") return blogPosts;
-    return blogPosts.filter((p) => p.category === category);
-  }, [category]);
+    if (category === "All Post") return allPosts;
+    return allPosts.filter((p) => p.category === category);
+  }, [allPosts, category]);
 
   return (
     <>
@@ -84,7 +86,7 @@ export default function Journal() {
             <div className="rounded-2xl bg-adjafi-gray-light/50 p-6">
               <h4 className="heading-display text-sm text-adjafi-ink">Articles récents</h4>
               <ul className="mt-4 space-y-3">
-                {blogPosts.slice(0, 4).map((post) => (
+                {allPosts.slice(0, 4).map((post) => (
                   <li key={post.slug}>
                     <Link
                       to={`/journal/${post.slug}`}
