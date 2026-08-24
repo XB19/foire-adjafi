@@ -252,7 +252,7 @@ export const blogCategories = ["All Post", "ADJAFI", "Divers", "EXPOSANTS", "Opp
 export const contactPhone = "+228 70 54 24 44";
 export const contactPhoneHref = "tel:+22870542444";
 export const socialLinks = {
-  facebook: "https://www.facebook.com/lafoireadjafi",
+  facebook: "https://www.facebook.com/FoireAdjafiTg",
   tiktok: "https://www.tiktok.com/@lafoireadjafi",
   youtube: "https://www.youtube.com/@lafoireadjafi",
 };
